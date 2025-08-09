@@ -65,9 +65,7 @@ router.get("/:id", async (request, response) => {
 
 // update a product
 router.put("/:id", async (request, response) => {
-  try {
-    // Memastikan semua field yang diperlukan ada di body permintaan,
-    // termasuk field 'image' untuk konsistensi.
+  try { 
     if (
       !request.body.name ||
       !request.body.priceInCents ||
@@ -80,31 +78,7 @@ router.put("/:id", async (request, response) => {
 
     const { id } = request.params;
 
-    // Menggunakan findByIdAndUpdate untuk mencari dan memperbarui produk
-    const result = await Product.findByIdAndUpdate(id, request.body, {
-      new: true, // Opsi untuk mengembalikan dokumen yang sudah diperbarui
-    });
-
-    // Menangani kasus jika produk tidak ditemukan
-    if (!result) {
-      return response.status(404).json({
-        message: "Product not found",
-      });
-    }
-
-    // Mengirim respons sukses jika produk berhasil diperbarui
-    return response.status(200).send({
-      message: "Product updated successfully",
-      updatedItem: result,
-    });
-  } catch (error) {
-    // Menangani kesalahan server jika ada masalah lain
-    console.log(error.message);
-    return response.status(500).send({
-      message: error.message,
-    });
-  }
-});
+    const result
 
 // delete a product
 router.delete("/:id", async (request, response) => {

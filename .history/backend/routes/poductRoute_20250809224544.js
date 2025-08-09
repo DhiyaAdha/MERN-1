@@ -38,7 +38,7 @@ router.post("/", async (request, response) => {
 router.get("/", async (request, response) => {
   try {
     const product = await Product.find({});
-    return response.status(200).json({ data: product });
+    return p.status(200).json({ data: product });
   } catch (error) {
     console.log(error.message);
     response.status(500).send({
@@ -50,7 +50,7 @@ router.get("/", async (request, response) => {
 // get a single product (detail)
 router.get("/:id", async (request, response) => {
     try {
-      const { id } = request.params;  
+      const { id } = request.params;
 
       const product = await Product.findById(id);
 
@@ -61,49 +61,6 @@ router.get("/:id", async (request, response) => {
             message: error.message,
         });
     }
-});
-
-// update a product
-router.put("/:id", async (request, response) => {
-  try {
-    // Memastikan semua field yang diperlukan ada di body permintaan,
-    // termasuk field 'image' untuk konsistensi.
-    if (
-      !request.body.name ||
-      !request.body.priceInCents ||
-      !request.body.category
-    ) {
-      return response.status(400).send({
-        message: "Required fields are missing",
-      });
-    }
-
-    const { id } = request.params;
-
-    // Menggunakan findByIdAndUpdate untuk mencari dan memperbarui produk
-    const result = await Product.findByIdAndUpdate(id, request.body, {
-      new: true, // Opsi untuk mengembalikan dokumen yang sudah diperbarui
-    });
-
-    // Menangani kasus jika produk tidak ditemukan
-    if (!result) {
-      return response.status(404).json({
-        message: "Product not found",
-      });
-    }
-
-    // Mengirim respons sukses jika produk berhasil diperbarui
-    return response.status(200).send({
-      message: "Product updated successfully",
-      updatedItem: result,
-    });
-  } catch (error) {
-    // Menangani kesalahan server jika ada masalah lain
-    console.log(error.message);
-    return response.status(500).send({
-      message: error.message,
-    });
-  }
 });
 
 // delete a product
